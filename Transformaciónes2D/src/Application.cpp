@@ -498,7 +498,7 @@ void Application::Start()
 	setColor(0, 0, 255, 255);
 	moveTo(0,0);
 	vertices = genGeometry(3, 250);
-	Sierpinski(vertices.at(0), vertices.at(1), vertices.at(2), 4);
+	Sierpinski(vertices.at(0), vertices.at(1), vertices.at(2), 2);
 
 	/*mtrans1.Translation(-500, -500);
 	mrot1.Rotation(rot++);
@@ -509,6 +509,22 @@ void Application::Start()
 
 void Application::update()
 {
+	int angulo = 0;
+	float rad = 0;
+	angulo = angulo + 1 % 360;
+	rad += 2 + angulo * PI / 180.0f;
+	Vec3 v1;
+
+	mRporT = mrot1.Rotation(rad);
+	//mTrans3 = mtrans1.Translation(-500, 500);
+	//mfinal = mRporT * mtrans1.Translation(-500, -500) * mRporT * mtrans2.Translation(500,500);
+
+	vectorF.clear();
+	for (Vec3& i : verticesA)
+	{
+		v1 = i *= mRporT;
+		vectorF.push_back(v1);
+	}
 
 }
 
@@ -517,14 +533,14 @@ void Application::draw()
 	clearScreen();
 
 	setColor(0, 0, 255, 255);
-	for (int i = 0; i < verticesA.size(); i += 3)
+	for (int i = 0; i < vectorF.size(); i += 3)
 	{
-			moveTo(verticesA[i].x + 500, verticesA[i].y + 500);
-			lineTo(verticesA[i + 1].x + 500, verticesA[i + 1].y + 500);
+			moveTo(vectorF[i].x + 500, vectorF[i].y + 500);
+			lineTo(vectorF[i + 1].x + 500, vectorF[i + 1].y + 500);
 			
-			lineTo(verticesA[i + 2].x + 500, verticesA[i + 2].y + 500);
+			lineTo(vectorF[i + 2].x + 500, vectorF[i + 2].y + 500);
 			
-			lineTo(verticesA[i].x + 500, verticesA[i].y + 500);
+			lineTo(vectorF[i].x + 500, vectorF[i].y + 500);
 		}
 	
 }
